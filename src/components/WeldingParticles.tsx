@@ -20,9 +20,9 @@ export function WeldingParticles({ running, startedAt }: { running: boolean; sta
       if (logo) logoBox = { x:logo.left+logo.width/2, y:logo.top+logo.height/2, radius:logo.width*.46 }
     }
     const resize = () => { canvas.width = innerWidth * devicePixelRatio; canvas.height = innerHeight * devicePixelRatio; ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); measureLogo() }
-    const spawn = (time: number, finalBurst = false) => {
+    const spawn = (time: number, finalBurst = false, fixedAngle?: number) => {
       const forgeProgress = Math.max(0, Math.min(1, (time - INTRO_TIMELINE.logoForgeStart) / (INTRO_TIMELINE.logoForgeEnd - INTRO_TIMELINE.logoForgeStart)))
-      const angle = -Math.PI / 2 + forgeProgress * Math.PI * 2
+      const angle = fixedAngle ?? Math.PI / 2 + forgeProgress * Math.PI * 2
       const x = logoBox.x + Math.cos(angle)*logoBox.radius
       const y = logoBox.y + Math.sin(angle)*logoBox.radius
       const count = (mobile ? 5 : 8) * (finalBurst ? 3 : 1)
@@ -36,8 +36,10 @@ export function WeldingParticles({ running, startedAt }: { running: boolean; sta
       const time = (performance.now() - startedAt.current) / 1000
       ctx.clearRect(0,0,innerWidth,innerHeight)
       const forging = time > INTRO_TIMELINE.logoForgeStart && time < INTRO_TIMELINE.logoForgeEnd
+      const seatImpact = Math.abs(time - INTRO_TIMELINE.firstWeld) < .22
       const assemblyImpact = Math.abs(time - INTRO_TIMELINE.northImpact) < .16
       const finalBurst = Math.abs(time - INTRO_TIMELINE.finalWeld) < .14
+      if (seatImpact && frame%2===0) spawn(time,true,Math.PI/2)
       if ((forging && frame%3===0) || (assemblyImpact && frame%2===0) || (finalBurst && frame%2===0)) spawn(time,finalBurst || assemblyImpact)
       const floor = innerHeight * .82
       particles = particles.filter(p=>p.life-- > 0)
