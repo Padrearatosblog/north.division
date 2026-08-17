@@ -3,6 +3,7 @@
 :root { font-family: Inter, Arial, sans-serif; color:#f1f0eb; background:#050708; font-synthesis:none; --turquoise:#18b9bc; }
 * { box-sizing:border-box }
 html { scroll-behavior:smooth; background:#050708 }
+html[data-intro='playing'],html[data-intro='playing'] body { overflow:hidden }
 body { margin:0; min-width:320px; background:#050708; overflow-x:hidden }
 button,a { color:inherit; font:inherit }
 a { text-decoration:none }
@@ -194,6 +195,17 @@ a { text-decoration:none }
   .hero__content { bottom:58px }
   .hero__lead { margin-top:20px }
   .hero__cta { margin-top:20px }
+}
+
+@media (max-width:380px) {
+  .navigation { padding:12px }
+  .navigation__brand .brand-mark--compact { height:34px;gap:7px;flex-shrink:0 }
+  .navigation__brand .brand-mark--compact img { width:34px;height:34px }
+  .navigation__brand .brand-mark--compact strong { font-size:13px;white-space:nowrap }
+  .navigation__brand .brand-mark--compact small { display:none }
+  .navigation nav { gap:10px;align-items:center }
+  .navigation nav a:first-child { font-size:8px;letter-spacing:.14em }
+  .navigation nav button { width:23px;height:23px }
 }
 
 @media (prefers-reduced-motion:reduce) {
