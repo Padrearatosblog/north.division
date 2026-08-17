@@ -2,7 +2,6 @@ import { BrandMark } from './BrandMark'
 
 export function Navigation({ visible }: { visible: boolean }) {
   const replayIntro = () => {
-    try { sessionStorage.removeItem('northDivisionIntroSeen') } catch { /* private mode */ }
     const url = new URL(window.location.href)
     url.searchParams.set('intro', '1')
     window.location.assign(url)
