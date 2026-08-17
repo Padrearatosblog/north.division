@@ -14,26 +14,31 @@ export function WeldingParticles({ running, startedAt }: { running: boolean; sta
     let frame = 0
     let particles: Particle[] = []
     const mobile = innerWidth < 760
-    const resize = () => { canvas.width = innerWidth * devicePixelRatio; canvas.height = innerHeight * devicePixelRatio; ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0) }
+    let logoBox = { x:innerWidth*.5, y:innerHeight*.46, radius:Math.min(innerWidth,innerHeight)*.2 }
+    const measureLogo = () => {
+      const logo = document.querySelector<HTMLElement>('.intro-scene__logo')?.getBoundingClientRect()
+      if (logo) logoBox = { x:logo.left+logo.width/2, y:logo.top+logo.height/2, radius:logo.width*.46 }
+    }
+    const resize = () => { canvas.width = innerWidth * devicePixelRatio; canvas.height = innerHeight * devicePixelRatio; ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); measureLogo() }
     const spawn = (time: number, finalBurst = false) => {
       const forgeProgress = Math.max(0, Math.min(1, (time - INTRO_TIMELINE.logoForgeStart) / (INTRO_TIMELINE.logoForgeEnd - INTRO_TIMELINE.logoForgeStart)))
       const angle = -Math.PI / 2 + forgeProgress * Math.PI * 2
-      const radius = Math.min(innerWidth, innerHeight) * (mobile ? .19 : .205)
-      const x = innerWidth*.5 + Math.cos(angle)*radius
-      const y = innerHeight*.46 + Math.sin(angle)*radius
-      const count = (mobile ? 3 : 6) * (finalBurst ? 3 : 1)
+      const x = logoBox.x + Math.cos(angle)*logoBox.radius
+      const y = logoBox.y + Math.sin(angle)*logoBox.radius
+      const count = (mobile ? 5 : 8) * (finalBurst ? 3 : 1)
       for(let i=0;i<count;i++) {
         const speed = finalBurst ? 1.8 : 1
         const maxLife = 28 + Math.random()*46
-        particles.push({ x,y, vx:(Math.cos(angle)*2+(Math.random()-.5)*5)*speed, vy:(Math.sin(angle)*2+(Math.random()-.72)*5)*speed, life:maxLife,maxLife,size:.4+Math.random()*1.7,trail:1.2+Math.random()*1.8,hot:Math.random()>.18 })
+        particles.push({ x,y, vx:(Math.cos(angle)*2.8+(Math.random()-.5)*6.5)*speed, vy:(Math.sin(angle)*2.5+(Math.random()-.72)*6)*speed, life:maxLife,maxLife,size:.55+Math.random()*2.15,trail:1.5+Math.random()*2.5,hot:Math.random()>.14 })
       }
     }
     const draw = () => {
       const time = (performance.now() - startedAt.current) / 1000
       ctx.clearRect(0,0,innerWidth,innerHeight)
       const forging = time > INTRO_TIMELINE.logoForgeStart && time < INTRO_TIMELINE.logoForgeEnd
+      const assemblyImpact = Math.abs(time - INTRO_TIMELINE.northImpact) < .16
       const finalBurst = Math.abs(time - INTRO_TIMELINE.finalWeld) < .14
-      if ((forging && frame%4===0) || (finalBurst && frame%2===0)) spawn(time,finalBurst)
+      if ((forging && frame%3===0) || (assemblyImpact && frame%2===0) || (finalBurst && frame%2===0)) spawn(time,finalBurst || assemblyImpact)
       const floor = innerHeight * .82
       particles = particles.filter(p=>p.life-- > 0)
       particles.forEach(p=>{

@@ -38,6 +38,8 @@ export function IntroSequence({ onComplete }: { onComplete: () => void }) {
       const technical = range(time, INTRO_TIMELINE.technicalStart, INTRO_TIMELINE.technicalPeak)
       const wire = range(time, 8.05, 12.25) * .68
       const finalFlash = Math.max(pulse(time, INTRO_TIMELINE.finalWeld, .22), pulse(time, INTRO_TIMELINE.firstWeld, .1) * .65)
+      const weldActive = time >= INTRO_TIMELINE.logoForgeStart && time <= INTRO_TIMELINE.logoForgeEnd ? 1 : 0
+      const weldAngle = -90 + logo * 360
       const exit = range(time, INTRO_TIMELINE.heroStart, INTRO_TIMELINE.duration)
       root?.style.setProperty('--intro-logo', logo.toFixed(3))
       root?.style.setProperty('--intro-impact', impact.toFixed(3))
@@ -46,6 +48,8 @@ export function IntroSequence({ onComplete }: { onComplete: () => void }) {
       root?.style.setProperty('--intro-technical', technical.toFixed(3))
       root?.style.setProperty('--intro-wire', wire.toFixed(3))
       root?.style.setProperty('--intro-flash', finalFlash.toFixed(3))
+      root?.style.setProperty('--intro-weld-active', weldActive.toFixed(0))
+      root?.style.setProperty('--intro-weld-angle', weldAngle.toFixed(2))
       root?.style.setProperty('--intro-exit', exit.toFixed(3))
       root?.style.setProperty('--intro-progress', Math.min(1, time / INTRO_TIMELINE.duration).toFixed(3))
       root?.style.setProperty('--scroll', wire.toFixed(3))
@@ -87,6 +91,7 @@ export function IntroSequence({ onComplete }: { onComplete: () => void }) {
         <div className="intro-scene__logo">
           <BrandMark />
           <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" pathLength="100" /></svg>
+          <div className="intro-scene__weld-orbit" aria-hidden="true"><i/></div>
           <div className="intro-scene__heat" />
         </div>
 

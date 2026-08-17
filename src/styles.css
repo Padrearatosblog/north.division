@@ -9,7 +9,7 @@ button,a { color:inherit; font:inherit }
 a { text-decoration:none }
 
 /* 15-second master intro — every visual value is driven by IntroSequence.tsx */
-.intro-experience { --intro-logo:0; --intro-impact:0; --intro-north:0; --intro-engineering:0; --intro-technical:0; --intro-wire:0; --intro-flash:0; --intro-exit:0; --intro-progress:0; position:fixed; z-index:100; inset:0; overflow:hidden; background:#020304 }
+.intro-experience { --intro-logo:0; --intro-impact:0; --intro-north:0; --intro-engineering:0; --intro-technical:0; --intro-wire:0; --intro-flash:0; --intro-exit:0; --intro-progress:0; --intro-weld-active:0; --intro-weld-angle:-90; position:fixed; z-index:100; inset:0; overflow:hidden; background:#020304 }
 .experience-gate { position:absolute; z-index:30; inset:0; display:grid; place-items:center; background:radial-gradient(circle at 50% 48%,#11191b 0,#06090a 32%,#020304 72%); transition:opacity .65s cubic-bezier(.7,0,.3,1),visibility .65s }
 .is-running .experience-gate { opacity:0; visibility:hidden; pointer-events:none }
 .experience-gate::before { content:''; position:absolute; inset:clamp(22px,4vw,64px); border:1px solid rgba(91,134,137,.16); clip-path:polygon(0 0,70px 0,70px 1px,1px 1px,1px 70px,0 70px,0 0,100% 0,100% 70px,calc(100% - 1px) 70px,calc(100% - 1px) 1px,calc(100% - 70px) 1px,calc(100% - 70px) 0,100% 0,100% 100%,calc(100% - 70px) 100%,calc(100% - 70px) calc(100% - 1px),calc(100% - 1px) calc(100% - 1px),calc(100% - 1px) calc(100% - 70px),100% calc(100% - 70px),100% 100%,0 100%,0 calc(100% - 70px),1px calc(100% - 70px),1px calc(100% - 1px),70px calc(100% - 1px),70px 100%,0 100%) }
@@ -37,6 +37,9 @@ a { text-decoration:none }
 .intro-scene__logo .brand-mark,.intro-scene__logo .brand-mark img { width:100%;height:100% }
 .intro-scene__logo svg { position:absolute;inset:1%;width:98%;height:98%;overflow:visible;transform:rotate(-90deg);filter:drop-shadow(0 0 5px #c9ffff) drop-shadow(0 0 17px #1abcc5) }
 .intro-scene__logo svg circle { fill:none;stroke:#eaffff;stroke-width:.55;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:calc(100 - var(--intro-logo) * 100);opacity:calc((1 - var(--intro-logo)) * 1.3) }
+.intro-scene__weld-orbit { position:absolute;z-index:4;inset:4%;border-radius:50%;transform:rotate(calc(var(--intro-weld-angle) * 1deg));opacity:var(--intro-weld-active);pointer-events:none }
+.intro-scene__weld-orbit i { position:absolute;right:-3px;top:50%;width:7px;height:7px;border-radius:50%;background:#f4ffff;transform:translateY(-50%);box-shadow:0 0 5px 2px #fff,0 0 16px 7px #4de9ff,0 0 42px 16px rgba(17,142,194,.72) }
+.intro-scene__weld-orbit i::after { content:'';position:absolute;left:50%;top:50%;width:52px;height:1px;transform:translate(-50%,-50%) rotate(18deg);background:linear-gradient(90deg,transparent,#d9ffff,transparent);box-shadow:0 0 7px #5cecff }
 .intro-scene__heat { position:absolute;inset:4%;border:1px solid rgba(91,232,235,calc((1 - var(--intro-logo)) * .6));border-radius:50%;box-shadow:0 0 calc(32px * var(--intro-logo)) rgba(20,183,190,.2) }
 .intro-scene__wordmark { position:absolute; z-index:7; left:50%; top:46%; margin-top:min(23vw,230px); width:min(92vw,720px); display:grid; justify-items:center; text-align:center; transform:translateX(-50%); pointer-events:none }
 .intro-scene__wordmark::before { content:''; width:calc(var(--intro-north) * min(72vw,550px)); height:1px; margin-bottom:12px; background:linear-gradient(90deg,transparent,#63e0e2 32% 68%,transparent); box-shadow:0 0 14px rgba(50,209,214,.45) }
